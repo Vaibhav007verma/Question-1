@@ -1,0 +1,55 @@
+package jtp_30;
+
+import java.io.IOException;
+import java.util.Base64;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+public class Main {
+
+	
+	@SuppressWarnings("unchecked")
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+	long timenow = System.currentTimeMillis() / 1000L;
+		//	System.out.println(timenow);
+		
+		String jwtPayload = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGQiOiJCaG9wYWwiLCJuYW1lIjoiVmFpYmhhdnZWZXJtYSIsImFnZSI6MjAsImV4cCI6MTYxNjIzOTIyMH0.VG30Pm3e_29jLQ68Uvs_gdH9gs0iAKfPclkBokGQ05c";
+		// Entering jwt Token
+	        String[] parts = jwtPayload.split("\\.");  
+		//payload string is fetched from token
+	        String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+		//encoded String is decoded by Base64
+	        ObjectMapper objectMapper = new ObjectMapper();    // Converting and Mapping the decoded String to java Object
+	        try {
+		            Map<String, Object> map = objectMapper.readValue(payload, Map.class);
+		            for (Map.Entry<String, Object> entry : map.entrySet())  // Displaying payload data
+		            {
+		            	System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+		            }
+			            			          
+			            Integer ageValue = (Integer) map.get("exp");  // fetching the exp value from payload
+			            int d = ageValue.intValue();
+			           
+			            if(d>=timenow)  // Following the Functionalities
+					            {
+					            	System.out.println("Yes");
+					            }
+			            
+					            else
+					            {
+					            	System.out.println("NO");
+					            }
+		        } 
+	        		catch (IOException e) // Displaying exception
+	        	{
+		        	e.printStackTrace();
+		        }
+	           
+	           
+	            
+
+	}
+}
